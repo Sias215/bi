@@ -1,12 +1,15 @@
 <?php
 
 namespace App\Console\Commands;
+use App\Service\TestService;
 use Illuminate\Console\Command;
+use xingwenge\canal_php\CanalConnectorFactory;
 
 
 class test extends Command
 {
-    const FILTER_TABLES = 'singa_collection.tb_collection_performance_report,singa_collection.tb_admin_user,singa_collection.tb_loan_collection,singa_collection.tb_loan_collection_order,singa_collection.tb_loan_collection_order_dispatch_log,singa_collection.tb_loan_collection_group_belong,singa_collection.tb_collection_product_dispatch_log,singa_collection.tb_auto_call_collection_call_log, singa_collection.tb_loan_collection_record_new_bak, singa_collection.tb_loan_collection_user_company, singa_collection.tb_loan_collection_group';
+    //const FILTER_TABLES = 'singa_collection.tb_loan_collection_order';
+    const FILTER_TABLES = 'bi.test';
     protected $signature = 'canal:test';
     protected $description = 'Command description';
     public function __construct()
@@ -16,9 +19,25 @@ class test extends Command
 
     public function handle()
     {
-        while (true) {
-            file_put_contents('/www/bi/app/Console/Commands',"111".PHP_EOL, FILE_APPEND);
-            sleep(1);
+        try {
+            $client = CanalConnectorFactory::createClient(1);
+            $client->connect("127.0.0.1", 11111);
+            $client->subscribe("1006", "test", self::FILTER_TABLES);
+            $client->disConnect();
+            $service = new TestService();
+            while (true) {
+                $message = $client->get(100);
+                if ($entries = $message->getEntries()) {
+                    foreach ($entries as $entry) {
+                        //Fmt::println($entry);
+                        $service->getSql($entry);
+                    }
+                }
+                sleep(1);
+            }
+            $client->disConnect();
+        } catch (\Exception $e) {
+            echo $e->getMessage(), PHP_EOL;
         }
     }
 }
