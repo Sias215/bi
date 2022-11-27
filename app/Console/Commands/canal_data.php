@@ -20,6 +20,7 @@ class canal_data extends Command
 
     public function handle()
     {
+
         try {
             $client = CanalConnectorFactory::createClient(1);
             $client->connect("192.168.36.128", 11111);
