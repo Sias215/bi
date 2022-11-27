@@ -2,14 +2,15 @@
 
 namespace App\Console\Commands;
 
-use App\Service\RcService;
+use App\Service\FenqiService;
 use Illuminate\Console\Command;
 use xingwenge\canal_php\CanalConnectorFactory;
+use xingwenge\canal_php\Fmt;
 
-class canal_rc extends Command
+class canal_fenqi extends Command
 {
-    const FILTER_TABLES = 'singa_rc.cloudun_amount,singa_rc.loan_info,singa_rc.cloudun_audit';
-    protected $signature = 'canal:rc';
+    const FILTER_TABLES = 'fenqi.order_user_info, fenqi.repay_plan, fenqi.user_info';
+    protected $signature = 'canal:fenqi';
     protected $description = 'Command description';
     public function __construct()
     {
@@ -21,9 +22,8 @@ class canal_rc extends Command
         try {
             $client = CanalConnectorFactory::createClient(1);
             $client->connect("127.0.0.1", 11111);
-            $client->subscribe("1006", "rc", self::FILTER_TABLES);
-            $client->disConnect();
-            $service = new RcService();
+            $client->subscribe("1002", "fenqi", self::FILTER_TABLES);
+            $service = new FenqiService();
             while (true) {
                 $message = $client->get(100);
                 if ($entries = $message->getEntries()) {

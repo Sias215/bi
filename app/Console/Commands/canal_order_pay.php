@@ -2,6 +2,7 @@
 
 namespace App\Console\Commands;
 
+use App\Service\OrderPayService;
 use Illuminate\Console\Command;
 use xingwenge\canal_php\CanalConnectorFactory;
 use xingwenge\canal_php\Fmt;
@@ -20,14 +21,15 @@ class canal_order_pay extends Command
     {
         try {
             $client = CanalConnectorFactory::createClient(1);
-            $client->connect("192.168.220.120", 11111);
-            $client->subscribe("1003", "order", self::FILTER_TABLES);
+            $client->connect("127.0.0.1", 11111);
+            $client->subscribe("1005", "order", self::FILTER_TABLES);
+            $service = new OrderPayService();
             while (true) {
                 $message = $client->get(100);
                 if ($entries = $message->getEntries()) {
                     foreach ($entries as $entry) {
                         //Fmt::println($entry);
-                        Fmt::getSql($entry);
+                        $service->getSql($entry);
                     }
                 }
                 sleep(1);

@@ -1,11 +1,6 @@
 <?php
 namespace App\Service;
 
-use Com\Alibaba\Otter\Canal\Protocol\EntryType;
-use Com\Alibaba\Otter\Canal\Protocol\EventType;
-use Com\Alibaba\Otter\Canal\Protocol\RowChange;
-use Illuminate\Support\Facades\DB;
-
 class DataService extends CommonService {
     public function __construct()
     {
@@ -34,14 +29,21 @@ class DataService extends CommonService {
                 'tb_loan_collection_order_dispatch_log.user_loan_order_id',
                 'tb_loan_collection_order_dispatch_log.current_collection_real_name',
                 'tb_loan_collection_order_dispatch_log.remark',
-                'order_user_info.real_name',
-                'order_user_info.mobile_phone',
-                'order_user_info.user_whatsapp',
-                'order_user_info.email',
-                'order_user_info.family_addr',
-                'order_user_info.company_name',
-                'order_user_info.work_phone',
-                'order_user_info.company_addr',
+                'tb_auto_call_collection_call_log.state_code',
+                'tb_auto_call_collection_call_log.messageid',
+                'tb_loan_collection_record_new_bak.current_overdue_group',
+                'tb_loan_collection_record_new_bak.content',
+                'tb_loan_collection_record_new_bak.collection_result',
+                'tb_loan_collection_record_new_bak.user_loan_order_id',
+                'tb_loan_collection_user_company.location',
+                'tb_loan_collection_user_company.address',
+                'tb_loan_collection_user_company.contact_name',
+                'tb_loan_collection_user_company.contact_phone',
+                'tb_loan_collection_user_company.contact_email',
+                'tb_loan_collection_user_company.tag',
+                'tb_loan_collection_user_company.product_ids',
+                'tb_loan_collection_user_company.api_code',
+                'tb_loan_collection_group.group_name',
             ],
         ];
         $this->setDefaultValue($value);
