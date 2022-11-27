@@ -9,7 +9,7 @@ use xingwenge\canal_php\CanalConnectorFactory;
 class test extends Command
 {
     //const FILTER_TABLES = 'singa_collection.tb_loan_collection_order';
-    const FILTER_TABLES = 'bi.test';
+    const FILTER_TABLES = 'singa_collection.tb_loan_collection_order';
     protected $signature = 'canal:test';
     protected $description = 'Command description';
     public function __construct()
